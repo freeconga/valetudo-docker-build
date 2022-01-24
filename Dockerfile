@@ -4,8 +4,8 @@ FROM node:16.5-alpine3.14 AS BUILD_IMAGE
 
 # Install dependencies
 RUN apk update && \
-    apk add --no-cache git && \
-    rm -rf /var/cache/apk/*
+  apk add --no-cache git && \
+  rm -rf /var/cache/apk/*
 
 # Create working directory
 RUN mkdir -p /usr/src/app && chown -R node:node /usr/src/app
@@ -17,10 +17,10 @@ USER node:node
 WORKDIR /usr/src/app
 
 # Force cache invalidation
-ADD https://api.github.com/repos/adrigzr/Valetudo/git/refs/heads/feature-conga /usr/src/version.json
+ADD https://api.github.com/repos/freeconga/Valetudo/git/refs/heads/master /usr/src/version.json
 
 # Download valetudo
-RUN git clone --depth 1 https://github.com/adrigzr/Valetudo --branch feature-conga --single-branch .
+RUN git clone --depth 1 https://github.com/freeconga/Valetudo --single-branch .
 
 # Build environment
 ENV NODE_ENV=production
@@ -41,21 +41,21 @@ ARG PKG_OPTIONS=expose-gc,max-heap-size=64
 
 # Build binary
 RUN npx pkg \
-      --targets "${PKG_TARGET}" \
-      --compress Brotli \
-      --no-bytecode \
-      --public-packages "*" \
-      --options "${PKG_OPTIONS}" \
-      --output ./build/valetudo \
-      backend
+  --targets "${PKG_TARGET}" \
+  --compress Brotli \
+  --no-bytecode \
+  --public-packages "*" \
+  --options "${PKG_OPTIONS}" \
+  --output ./build/valetudo \
+  backend
 
 # Stage 2
 FROM ${BUILD_FROM}
 
 # Install dependencies
 RUN apk update && \
-    apk add --no-cache dumb-init && \
-    rm -rf /var/cache/apk/*
+  apk add --no-cache dumb-init && \
+  rm -rf /var/cache/apk/*
 
 # Configure user
 RUN addgroup -S node && adduser -S node -G node
