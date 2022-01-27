@@ -10,8 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: adrigzr/Valetudo
-          ref: feature-conga
+          repository: freeconga/Valetudo
           fetch-depth: 0
       - name: Set up variables
         id: vars
