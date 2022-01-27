@@ -1,6 +1,6 @@
 # Stage 1
 ARG BUILD_FROM=amd64/alpine:3.14
-FROM node:16.5-alpine3.14 AS BUILD_IMAGE
+FROM node:16.13-alpine3.14 AS BUILD_IMAGE
 
 # Install dependencies
 RUN apk update && \
